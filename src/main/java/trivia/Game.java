@@ -8,6 +8,7 @@ import java.util.List;
 class Player {
    private final String name;
    private int place = 0;
+   private int coins = 0;
 
    Player(String name) {
       this.name = name;
@@ -19,6 +20,14 @@ class Player {
 
    public int place() {
       return place;
+   }
+
+   public void addCoin() {
+       coins++;
+   }
+
+   public int coins() {
+      return coins;
    }
 
    public void move(int roll) {
@@ -141,10 +150,10 @@ public class Game implements IGame {
       if (inPenaltyBox[currentPlayer]) {
          if (isGettingOutOfPenaltyBox) {
             System.out.println("Answer was correct!!!!");
-            purses[currentPlayer]++;
+            currentPlayer().addCoin();
             System.out.println(currentPlayer().name()
                                + " now has "
-                               + purses[currentPlayer]
+                               + currentPlayer().coins()
                                + " Gold Coins.");
 
             boolean winner = didPlayerWin();
@@ -162,10 +171,10 @@ public class Game implements IGame {
       } else {
 
          System.out.println("Answer was corrent!!!!");
-         purses[currentPlayer]++;
+         currentPlayer().addCoin();
          System.out.println(currentPlayer().name()
                             + " now has "
-                            + purses[currentPlayer]
+                            + currentPlayer().coins()
                             + " Gold Coins.");
 
          boolean winner = didPlayerWin();
@@ -188,7 +197,7 @@ public class Game implements IGame {
 
 
    private boolean didPlayerWin() {
-      return !(purses[currentPlayer] == 6);
+      return !(currentPlayer().coins() == 6);
    }
 }
 
