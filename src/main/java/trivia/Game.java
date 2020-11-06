@@ -47,12 +47,12 @@ public class Game implements IGame {
             };
         }
 
-        private Game.QuestionCategory currentCategory(int index) {
+        private QuestionCategory currentCategory(int index) {
             return switch (index % 4) {
-                case 0 -> Game.QuestionCategory.POP;
-                case 1 -> Game.QuestionCategory.SCIENCE;
-                case 2 -> Game.QuestionCategory.SPORTS;
-                case 3 -> Game.QuestionCategory.ROCK;
+                case 0 -> QuestionCategory.POP;
+                case 1 -> QuestionCategory.SCIENCE;
+                case 2 -> QuestionCategory.SPORTS;
+                case 3 -> QuestionCategory.ROCK;
                 default -> throw new IllegalStateException("Unexpected value: " + index % 4);
             };
         }
@@ -61,24 +61,25 @@ public class Game implements IGame {
             return "Rock Question " + index;
         }
 
+        enum QuestionCategory {
+            POP("Pop"),
+            SCIENCE("Science"),
+            SPORTS("Sports"),
+            ROCK("Rock");
+
+            private final String label;
+
+            QuestionCategory(String label) {
+                this.label = label;
+            }
+
+            public String getLabel() {
+                return label;
+            }
+        }
     }
 
-    enum QuestionCategory {
-        POP("Pop"),
-        SCIENCE("Science"),
-        SPORTS("Sports"),
-        ROCK("Rock");
 
-        private final String label;
-
-        QuestionCategory(String label) {
-            this.label = label;
-        }
-
-        public String getLabel() {
-            return label;
-        }
-    }
 
 
 
