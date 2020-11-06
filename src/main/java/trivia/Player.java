@@ -41,4 +41,8 @@ public class Player {
             place -= 12;
         }
     }
+
+    public boolean didPlayerWin() {
+        return !(coins() == 6); // TODO odd? possible bug
+    }
 }

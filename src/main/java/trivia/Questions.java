@@ -4,11 +4,6 @@ import java.util.*;
 import java.util.stream.Stream;
 
 public class Questions {
-    private final List<String> popQuestions = new LinkedList<>();
-    private final List<String> scienceQuestions = new LinkedList<>();
-    private final List<String> sportsQuestions = new LinkedList<>();
-    private final List<String> rockQuestions = new LinkedList<>();
-
     private final Map<QuestionCategory, List<String>> questions = new HashMap<>();
 
     public Questions() {

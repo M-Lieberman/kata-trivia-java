@@ -3,6 +3,10 @@ package trivia;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * refactoring kata
+ * https://www.youtube.com/watch?v=OVqnQ0xxx0I&feature=youtu.be
+ */
 public class Game implements IGame {
     private final List<Player> players = new ArrayList<>();
     private final Questions questions = new Questions();
@@ -24,6 +28,7 @@ public class Game implements IGame {
     public void roll(int roll) {
         System.out.println(currentPlayer().name() + " is the current player");
         System.out.println("They have rolled a " + roll);
+        // TODO nested ifs
         if (currentPlayer().isInPenaltyBox()) {
             if (roll % 2 != 0) {
                 isGettingOutOfPenaltyBox = true;
@@ -53,39 +58,29 @@ public class Game implements IGame {
     }
 
     public boolean wasCorrectlyAnswered() {
+        boolean result = rewardPlayer();
+        moveToNextPlayer();
+        return result;
+    }
+
+    // TODO name this
+    private boolean rewardPlayer() {
+        // TODO nested ifs
         if (currentPlayer().isInPenaltyBox()) {
             if (isGettingOutOfPenaltyBox) {
-                // TODO possible bug - exit penalty box? ask the business how to get out of the penalty box
                 System.out.println("Answer was correct!!!!");
+                // TODO possible bug - exit penalty box? ask the business how to get out of the penalty box
                 currentPlayer().addCoin();
-                System.out.println(currentPlayer().name()
-                        + " now has "
-                        + currentPlayer().coins()
-                        + " Gold Coins.");
-
-                boolean winner = didPlayerWin();
-                moveToNextPlayer();
-
-                return winner;
+                System.out.println(currentPlayer().name() + " now has " + currentPlayer().coins() + " Gold Coins.");
+                return currentPlayer().didPlayerWin();
             } else {
-                moveToNextPlayer();
                 return true;
             }
-
-
         } else {
-
             System.out.println("Answer was correct!!!!");
             currentPlayer().addCoin();
-            System.out.println(currentPlayer().name()
-                    + " now has "
-                    + currentPlayer().coins()
-                    + " Gold Coins.");
-
-            boolean winner = didPlayerWin();
-            moveToNextPlayer();
-
-            return winner;
+            System.out.println(currentPlayer().name() + " now has " + currentPlayer().coins() + " Gold Coins.");
+            return currentPlayer().didPlayerWin();
         }
     }
 
@@ -103,10 +98,6 @@ public class Game implements IGame {
         return true;
     }
 
-
-    private boolean didPlayerWin() {
-        return !(currentPlayer().coins() == 6);
-    }
 }
 
 
