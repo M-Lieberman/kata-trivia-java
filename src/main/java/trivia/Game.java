@@ -47,7 +47,7 @@ public class Game implements IGame {
             movePlayer(roll);
 
             System.out.println(currentPlayer().name() + "'s new location is " + currentPlayer().place());
-            System.out.println("The category is " + currentCategory());
+            System.out.println("The category is " + currentCategory().getLabel());
             askQuestion();
          } else {
             System.out.println(currentPlayer().name() + " is not getting out of the penalty box");
@@ -57,7 +57,7 @@ public class Game implements IGame {
       } else {
          movePlayer(roll);
          System.out.println(currentPlayer().name() + "'s new location is " + currentPlayer().place());
-         System.out.println("The category is " + currentCategory());
+         System.out.println("The category is " + currentCategory().getLabel());
          askQuestion();
       }
 
@@ -69,32 +69,42 @@ public class Game implements IGame {
 
    private void askQuestion() {
       System.out.println(extractNextQuestion());
-   }
+   }add QuestionCateogry
 
    private String extractNextQuestion() {
       return switch (currentCategory()) {
-         case "Pop" -> popQuestions.remove(0);
-         case "Science" -> scienceQuestions.remove(0);
-         case "Sports" -> sportsQuestions.remove(0);
-         case "Rock" -> rockQuestions.remove(0);
-         default -> throw new IllegalStateException("Unexpected value: " + currentCategory());
+         case POP -> popQuestions.remove(0);
+         case SCIENCE -> scienceQuestions.remove(0);
+         case SPORTS -> sportsQuestions.remove(0);
+         case ROCK -> rockQuestions.remove(0);
+         default -> throw new IllegalStateException("Unexpected value: " + currentCategory().getLabel());
       };
    }
 
    enum QuestionCategory {
-      POP,
-      SCIENCE,
-      SPORTS,
-      ROCK
+      POP ("Pop"),
+      SCIENCE ("Science"),
+      SPORTS ("Sports"),
+      ROCK ("Rock");
+
+      private final String label;
+
+      QuestionCategory(String label) {
+         this.label = label;
+      }
+
+      public String getLabel() {
+         return label;
+      }
    }
 
-   private String currentCategory() {
-      int modulo = currentPlayer().place() % 4;
-      return switch (modulo) {
-         case 0 -> "Pop";
-         case 1 -> "Science";
-         case 2 -> "Sports";
-         default -> "Rock";
+   private QuestionCategory currentCategory() {
+      return switch (currentPlayer().place() % 4) {
+         case 0 -> QuestionCategory.POP;
+         case 1 -> QuestionCategory.SCIENCE;
+         case 2 -> QuestionCategory.SPORTS;
+         case 3 -> QuestionCategory.ROCK;
+         default -> throw new IllegalStateException("Unexpected value: " + currentPlayer().place() % 4);
       };
    }
 
@@ -127,7 +137,7 @@ public class Game implements IGame {
 
       } else {
 
-         System.out.println("Answer was corrent!!!!");
+         System.out.println("Answer was correct!!!!");
          currentPlayer().addCoin();
          System.out.println(currentPlayer().name()
                             + " now has "
