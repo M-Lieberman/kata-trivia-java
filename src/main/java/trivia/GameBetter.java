@@ -34,7 +34,7 @@ public class GameBetter implements IGame {
       return (howManyPlayers() >= 2);
    }
 
-   public boolean add(String playerName) {
+   public void add(String playerName) {
 
 
       players.add(playerName);
@@ -44,7 +44,6 @@ public class GameBetter implements IGame {
 
       System.out.println(playerName + " was added");
       System.out.println("They are player number " + players.size());
-      return true;
    }
 
    public int howManyPlayers() {

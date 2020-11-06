@@ -6,13 +6,11 @@ import java.util.List;
 
 public class Game implements IGame {
    private List<Player> players = new ArrayList<>();
-   boolean[] inPenaltyBox = new boolean[6];
-   int[] purses = new int[6];
 
-   List<String> popQuestions = new LinkedList<>();
-   List<String> scienceQuestions = new LinkedList<>();
-   List<String> sportsQuestions = new LinkedList<>();
-   List<String> rockQuestions = new LinkedList<>();
+   private final List<String> popQuestions = new LinkedList<>();
+   private final List<String> scienceQuestions = new LinkedList<>();
+   private final List<String> sportsQuestions = new LinkedList<>();
+   private final List<String> rockQuestions = new LinkedList<>();
 
    int currentPlayer = 0;
    boolean isGettingOutOfPenaltyBox;
@@ -30,19 +28,12 @@ public class Game implements IGame {
       return "Rock Question " + index;
    }
 
-   public boolean add(String playerName) {
+   public void add(String playerName) {
       players.add(new Player(playerName));
-      purses[howManyPlayers()] = 0;
-      inPenaltyBox[howManyPlayers()] = false;
 
       System.out.println(playerName + " was added");
       System.out.println("They are player number " + players.size());
-      return true;
-   }
-
-   public int howManyPlayers() {
-      return players.size();
-   }
+    }
 
    public void roll(int roll) {
       System.out.println(currentPlayer().name() + " is the current player");
@@ -55,9 +46,7 @@ public class Game implements IGame {
             System.out.println(currentPlayer().name() + " is getting out of the penalty box");
             movePlayer(roll);
 
-            System.out.println(currentPlayer().name()
-                               + "'s new location is "
-                               + currentPlayer().place());
+            System.out.println(currentPlayer().name() + "'s new location is " + currentPlayer().place());
             System.out.println("The category is " + currentCategory());
             askQuestion();
          } else {
@@ -67,9 +56,7 @@ public class Game implements IGame {
 
       } else {
          movePlayer(roll);
-         System.out.println(currentPlayer().name()
-                            + "'s new location is "
-                            + currentPlayer().place());
+         System.out.println(currentPlayer().name() + "'s new location is " + currentPlayer().place());
          System.out.println("The category is " + currentCategory());
          askQuestion();
       }
@@ -94,18 +81,21 @@ public class Game implements IGame {
       };
    }
 
+   enum QuestionCategory {
+      POP,
+      SCIENCE,
+      SPORTS,
+      ROCK
+   }
 
    private String currentCategory() {
-      if (currentPlayer().place() == 0) return "Pop";
-      if (currentPlayer().place() == 4) return "Pop";
-      if (currentPlayer().place() == 8) return "Pop";
-      if (currentPlayer().place() == 1) return "Science";
-      if (currentPlayer().place() == 5) return "Science";
-      if (currentPlayer().place() == 9) return "Science";
-      if (currentPlayer().place() == 2) return "Sports";
-      if (currentPlayer().place() == 6) return "Sports";
-      if (currentPlayer().place() == 10) return "Sports";
-      return "Rock";
+      int modulo = currentPlayer().place() % 4;
+      return switch (modulo) {
+         case 0 -> "Pop";
+         case 1 -> "Science";
+         case 2 -> "Sports";
+         default -> "Rock";
+      };
    }
 
    private Player currentPlayer() {
