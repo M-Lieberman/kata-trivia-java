@@ -24,7 +24,6 @@ public class Game implements IGame {
     public void roll(int roll) {
         System.out.println(currentPlayer().name() + " is the current player");
         System.out.println("They have rolled a " + roll);
-
         if (currentPlayer().isInPenaltyBox()) {
             if (roll % 2 != 0) {
                 isGettingOutOfPenaltyBox = true;
@@ -49,15 +48,14 @@ public class Game implements IGame {
 
     }
 
-
     private Player currentPlayer() {
         return players.get(currentPlayer);
     }
 
     public boolean wasCorrectlyAnswered() {
-        // TODO possible bug - exit penalty box?
         if (currentPlayer().isInPenaltyBox()) {
             if (isGettingOutOfPenaltyBox) {
+                // TODO possible bug - exit penalty box? ask the business how to get out of the penalty box
                 System.out.println("Answer was correct!!!!");
                 currentPlayer().addCoin();
                 System.out.println(currentPlayer().name()
@@ -66,13 +64,11 @@ public class Game implements IGame {
                         + " Gold Coins.");
 
                 boolean winner = didPlayerWin();
-                currentPlayer++;
-                if (currentPlayer == players.size()) currentPlayer = 0;
+                moveToNextPlayer();
 
                 return winner;
             } else {
-                currentPlayer++;
-                if (currentPlayer == players.size()) currentPlayer = 0;
+                moveToNextPlayer();
                 return true;
             }
 
@@ -87,11 +83,15 @@ public class Game implements IGame {
                     + " Gold Coins.");
 
             boolean winner = didPlayerWin();
-            currentPlayer++;
-            if (currentPlayer == players.size()) currentPlayer = 0;
+            moveToNextPlayer();
 
             return winner;
         }
+    }
+
+    private void moveToNextPlayer() {
+        currentPlayer++;
+        if (currentPlayer == players.size()) currentPlayer = 0;
     }
 
     public boolean wrongAnswer() {
@@ -99,8 +99,7 @@ public class Game implements IGame {
         System.out.println(currentPlayer().name() + " was sent to the penalty box");
         currentPlayer().moveToPenaltyBox();
 
-        currentPlayer++;
-        if (currentPlayer == players.size()) currentPlayer = 0;
+        moveToNextPlayer();
         return true;
     }
 
