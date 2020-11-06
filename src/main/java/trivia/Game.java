@@ -69,7 +69,7 @@ public class Game implements IGame {
 
    private void askQuestion() {
       System.out.println(extractNextQuestion());
-   }add QuestionCateogry
+   }
 
    private String extractNextQuestion() {
       return switch (currentCategory()) {
