@@ -4,44 +4,10 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-// @Value
-class Player {
-   private final String name;
-   private int place = 0;
-   private int coins = 0;
-
-   Player(String name) {
-      this.name = name;
-   }
-
-   public String name() {
-      return name;
-   }
-
-   public int place() {
-      return place;
-   }
-
-   public void addCoin() {
-       coins++;
-   }
-
-   public int coins() {
-      return coins;
-   }
-
-   public void move(int roll) {
-      place += roll;
-      if (place >= 12) {
-         place -= 12;
-      }
-   }
-}
-
 public class Game implements IGame {
    private List<Player> players = new ArrayList<>();
-   int[] purses = new int[6];
    boolean[] inPenaltyBox = new boolean[6];
+   int[] purses = new int[6];
 
    List<String> popQuestions = new LinkedList<>();
    List<String> scienceQuestions = new LinkedList<>();
@@ -82,7 +48,7 @@ public class Game implements IGame {
       System.out.println(currentPlayer().name() + " is the current player");
       System.out.println("They have rolled a " + roll);
 
-      if (inPenaltyBox[currentPlayer]) {
+      if (currentPlayer().isInPenaltyBox()) {
          if (roll % 2 != 0) {
             isGettingOutOfPenaltyBox = true;
 
@@ -147,7 +113,8 @@ public class Game implements IGame {
    }
 
    public boolean wasCorrectlyAnswered() {
-      if (inPenaltyBox[currentPlayer]) {
+      // TODO possible bug - exit penalty box?
+      if (currentPlayer().isInPenaltyBox()) {
          if (isGettingOutOfPenaltyBox) {
             System.out.println("Answer was correct!!!!");
             currentPlayer().addCoin();
@@ -188,7 +155,7 @@ public class Game implements IGame {
    public boolean wrongAnswer() {
       System.out.println("Question was incorrectly answered");
       System.out.println(currentPlayer().name() + " was sent to the penalty box");
-      inPenaltyBox[currentPlayer] = true;
+      currentPlayer().moveToPenaltyBox();
 
       currentPlayer++;
       if (currentPlayer == players.size()) currentPlayer = 0;
