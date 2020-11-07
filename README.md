@@ -1,3 +1,4 @@
 ### Refactoring Coding Kata repository 
 
-code along refactoring kata
+Code along "Trivia" refactoring kata.
+
